@@ -8,6 +8,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, ComObj, Vcl.OleCtrls,
   SHDocVw;
 
+
 type
   TForm1 = class(TForm)
     OpenFile_B1: TButton;
@@ -24,7 +25,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    // создание html документа
+    // Г±Г®Г§Г¤Г Г­ГЁГҐ html Г¤Г®ГЄГіГ¬ГҐГ­ГІГ 
     procedure CreateHTMLFile;
     procedure WordParsing;
     procedure ParagraphParsing(paragraph: variant);
@@ -33,11 +34,11 @@ type
 
 var
   Form: TForm1;
-  // html-файл
+  // html-ГґГ Г©Г«
   HTMLFile: TStringList;
-  // word-файл
+  // word-ГґГ Г©Г«
   W: variant;
-  // счетчик таблицы
+  // Г±Г·ГҐГІГ·ГЁГЄ ГІГ ГЎГ«ГЁГ¶Г»
   TableCount: integer;
 
 implementation
@@ -52,61 +53,61 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  // задаем начальную директорию для OpenDialog
+  // Г§Г Г¤Г ГҐГ¬ Г­Г Г·Г Г«ГјГ­ГіГѕ Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГѕ Г¤Г«Гї OpenDialog
   OD.InitialDir := ExtractFilePath(Application.ExeName);
-  // создаем документ, html
+  // Г±Г®Г§Г¤Г ГҐГ¬ Г¤Г®ГЄГіГ¬ГҐГ­ГІ, html
   HTMLFile := TStringList.Create;
 end;
 
 procedure TForm1.OpenFile_B1Click(Sender: TObject);
 begin
-  // если файл не выбран, то выходим
+  // ГҐГ±Г«ГЁ ГґГ Г©Г« Г­ГҐ ГўГ»ГЎГ°Г Г­, ГІГ® ГўГ»ГµГ®Г¤ГЁГ¬
   { if (not OD.Execute) or (OD.FileName = '') then
     exit; }
 
-  // загружаем тестовый документ
+  // Г§Г ГЈГ°ГіГ¦Г ГҐГ¬ ГІГҐГ±ГІГ®ГўГ»Г© Г¤Г®ГЄГіГ¬ГҐГ­ГІ
   W := CreateOleObject('Word.Application');
   // W.Documents.Open(OD.FileName, EmptyParam, True);
-  W.Documents.Open('C:\Users\Public\Documents\Практика\test doc.docx',
+  W.Documents.Open('C:\Users\Public\Documents\ГЏГ°Г ГЄГІГЁГЄГ \test doc.docx',
     EmptyParam, True);
   W.activedocument.SaveAs
-    ('C:\Users\Public\Documents\Практика\test doc_dublicate.docx');
+    ('C:\Users\Public\Documents\ГЏГ°Г ГЄГІГЁГЄГ \test doc_dublicate.docx');
   W.activedocument.close;
   W.Documents.Open
-    ('C:\Users\Public\Documents\Практика\test doc_dublicate.docx');
+    ('C:\Users\Public\Documents\ГЏГ°Г ГЄГІГЁГЄГ \test doc_dublicate.docx');
   // W.Visible := True;
-  // 'C:\Users\Public\Documents\Практика\Win32\Debug\test doc.docx'
-  // пишем путь
+  // 'C:\Users\Public\Documents\ГЏГ°Г ГЄГІГЁГЄГ \Win32\Debug\test doc.docx'
+  // ГЇГЁГёГҐГ¬ ГЇГіГІГј
   // FileName1.Text := OD.FileName;
   FileName1.Text :=
-    'C:\Users\Public\Documents\Практика\Win32\Debug\test doc.docx';
+    'C:\Users\Public\Documents\ГЏГ°Г ГЄГІГЁГЄГ \Win32\Debug\test doc.docx';
 end;
 
 procedure TForm1.CreateHTML_BClick(Sender: TObject);
 begin
-  // создаем html-файл
+  // Г±Г®Г§Г¤Г ГҐГ¬ html-ГґГ Г©Г«
   CreateHTMLFile;
-  // сохраняем его
-  HTMLFile.SaveToFile('C:\Users\Public\Documents\Практика\test.html');
-  // открываем в браузере
+  // Г±Г®ГµГ°Г Г­ГїГҐГ¬ ГҐГЈГ®
+  HTMLFile.SaveToFile('C:\Users\Public\Documents\ГЏГ°Г ГЄГІГЁГЄГ \test.html');
+  // Г®ГІГЄГ°Г»ГўГ ГҐГ¬ Гў ГЎГ°Г ГіГ§ГҐГ°ГҐ
   PreView_WB.Navigate('file://' +
-    'C:\Users\Public\Documents\Практика\test.html');
+    'C:\Users\Public\Documents\ГЏГ°Г ГЄГІГЁГЄГ \test.html');
 end;
 
 procedure TForm1.CreateHTMLFile;
 begin
-  // очищаем
+  // Г®Г·ГЁГ№Г ГҐГ¬
   HTMLFile.Clear;
-  // обращаемся к "html"
+  // Г®ГЎГ°Г Г№Г ГҐГ¬Г±Гї ГЄ "html"
   with HTMLFile do
   begin
-    // пишем заголовок
+    // ГЇГЁГёГҐГ¬ Г§Г ГЈГ®Г«Г®ГўГ®ГЄ
     Add('<html>');
     Add('<head>');
     Add('<title>' + ExtractFileName(FileName1.Text) + '</title>' + #10#13 +
       '</head>');
     Add('<body>');
-    // наполняем body
+    // Г­Г ГЇГ®Г«Г­ГїГҐГ¬ body
     WordParsing;
     Memo1.lines.Add('thats all');
     Add('</body>');
@@ -122,14 +123,14 @@ var
   listFlag: boolean;
   CurTable, AlignNumb, curFontSize, FontSize: integer;
 begin
-  listFlag := False; // флаг для проверки списков
-  TableCount := 1; // инициализируем счетчик таблиц
-  CurTable := 1; // текущая таблица
+  listFlag := False; // ГґГ«Г ГЈ Г¤Г«Гї ГЇГ°Г®ГўГҐГ°ГЄГЁ Г±ГЇГЁГ±ГЄГ®Гў
+  TableCount := 1; // ГЁГ­ГЁГ¶ГЁГ Г«ГЁГ§ГЁГ°ГіГҐГ¬ Г±Г·ГҐГІГ·ГЁГЄ ГІГ ГЎГ«ГЁГ¶
+  CurTable := 1; // ГІГҐГЄГіГ№Г Гї ГІГ ГЎГ«ГЁГ¶Г 
 
-  // цикл по абзацам
+  // Г¶ГЁГЄГ« ГЇГ® Г ГЎГ§Г Г¶Г Г¬
   for i := 1 to W.activedocument.Paragraphs.Count do
   begin
-    wordrange := W.activedocument.Paragraphs.Item(i).range; // абзац
+    wordrange := W.activedocument.Paragraphs.Item(i).range; // Г ГЎГ§Г Г¶
 
     AlignNumb := W.activedocument.Paragraphs.Item(i).Alignment;
     case AlignNumb of
@@ -143,11 +144,11 @@ begin
     AlignName := 'Justify'
     end;
 
-    wordrange := W.activedocument.Paragraphs.Item(i).range; // абзац
+    wordrange := W.activedocument.Paragraphs.Item(i).range; // Г ГЎГ§Г Г¶
 
     curFontName := string('face = "' + string(wordrange.formattedText.Font.Name)
-      + '"'); // название шрифта
-    curFontSize := strTOInt(varToStr(wordrange.formattedText.Font.Size)); // название шрифта
+      + '"'); // Г­Г Г§ГўГ Г­ГЁГҐ ГёГ°ГЁГґГІГ 
+    curFontSize := strTOInt(varToStr(wordrange.formattedText.Font.Size)); // Г­Г Г§ГўГ Г­ГЁГҐ ГёГ°ГЁГґГІГ 
 
     case curFontSize of
     12:
@@ -160,11 +161,11 @@ begin
      curFontSize := 6;
     end;
 
-    // если текст жирный, передать абзац в функцию
+    // ГҐГ±Г«ГЁ ГІГҐГЄГ±ГІ Г¦ГЁГ°Г­Г»Г©, ГЇГҐГ°ГҐГ¤Г ГІГј Г ГЎГ§Г Г¶ Гў ГґГіГ­ГЄГ¶ГЁГѕ
     if wordrange.formattedText.bold <> 0 then
       ParagraphParsing(wordrange);
 
-    // если текущий шрифт не совпадает с предыдущим
+    // ГҐГ±Г«ГЁ ГІГҐГЄГіГ№ГЁГ© ГёГ°ГЁГґГІ Г­ГҐ Г±Г®ГўГЇГ Г¤Г ГҐГІ Г± ГЇГ°ГҐГ¤Г»Г¤ГіГ№ГЁГ¬
     if (curFontName <> FontName) or (curFontSize <> FontSize) then
     begin
       wordrange.insertbefore('<font ' + curFontName + '" size = "' +
@@ -175,22 +176,22 @@ begin
       FontSize := curFontSize;
     end;
 
-    //если ныняшняя таблица закончилась, меняем CurTable
+    //ГҐГ±Г«ГЁ Г­Г»Г­ГїГёГ­ГїГї ГІГ ГЎГ«ГЁГ¶Г  Г§Г ГЄГ®Г­Г·ГЁГ«Г Г±Гј, Г¬ГҐГ­ГїГҐГ¬ CurTable
     if (CurTable <> TableCount) and (wordrange.Tables.Count = 0) then
     begin
       CurTable := CurTable + 1;
     end;
 
-    //если параграф принадлежит таблице
+    //ГҐГ±Г«ГЁ ГЇГ Г°Г ГЈГ°Г Гґ ГЇГ°ГЁГ­Г Г¤Г«ГҐГ¦ГЁГІ ГІГ ГЎГ«ГЁГ¶ГҐ
     if (wordrange.Tables.Count > 0) then
     begin
-      //если текущая таблица совпадает с TableCount
+      //ГҐГ±Г«ГЁ ГІГҐГЄГіГ№Г Гї ГІГ ГЎГ«ГЁГ¶Г  Г±Г®ГўГЇГ Г¤Г ГҐГІ Г± TableCount
       if CurTable = TableCount then
         TableFormatting();
       continue;
     end;
 
-    // если абзац находится в списке
+    // ГҐГ±Г«ГЁ Г ГЎГ§Г Г¶ Г­Г ГµГ®Г¤ГЁГІГ±Гї Гў Г±ГЇГЁГ±ГЄГҐ
     if (wordrange.listformat.listtype > 0) and
       (wordrange.listformat.listtype < 6) then
     begin
@@ -220,26 +221,26 @@ var
   isBold: integer;
 begin
   Memo1.lines.Add('gogo');
-  // обратный цикл по словам в параграфе
+  // Г®ГЎГ°Г ГІГ­Г»Г© Г¶ГЁГЄГ« ГЇГ® Г±Г«Г®ГўГ Г¬ Гў ГЇГ Г°Г ГЈГ°Г ГґГҐ
   for i := paragraph.words.Count downto 1 do
   begin
     isBold := paragraph.words.Item(i).formattedText.bold;
-    // проверка жирности слова
-    // если текст жирный
+    // ГЇГ°Г®ГўГҐГ°ГЄГ  Г¦ГЁГ°Г­Г®Г±ГІГЁ Г±Г«Г®ГўГ 
+    // ГҐГ±Г«ГЁ ГІГҐГЄГ±ГІ Г¦ГЁГ°Г­Г»Г©
     if isBold = -1 then
     begin
       if Flag = False then
         paragraph.words.Item(i).insertafter('</b>');
       Flag := True;
     end;
-    // если текст не жирный
+    // ГҐГ±Г«ГЁ ГІГҐГЄГ±ГІ Г­ГҐ Г¦ГЁГ°Г­Г»Г©
     if (isBold = 0) and (Flag = True) then
     begin
       paragraph.words.Item(i).insertafter('<b>');
       Flag := False;
     end;
   end;
-  // проставляем открывающий тег, если первое слово жирное
+  // ГЇГ°Г®Г±ГІГ ГўГ«ГїГҐГ¬ Г®ГІГЄГ°Г»ГўГ ГѕГ№ГЁГ© ГІГҐГЈ, ГҐГ±Г«ГЁ ГЇГҐГ°ГўГ®ГҐ Г±Г«Г®ГўГ® Г¦ГЁГ°Г­Г®ГҐ
   if Flag = True then
     paragraph.words.Item(1).insertbefore('<b>');
 end;
@@ -249,12 +250,12 @@ var
   TableColumnsCount, TableRowsCount, CurrentRow, CurrentColumn: integer;
   text: string;
 begin
-  // Определяем количество столбцов
+  // ГЋГЇГ°ГҐГ¤ГҐГ«ГїГҐГ¬ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г±ГІГ®Г«ГЎГ¶Г®Гў
   TableColumnsCount := W.activedocument.Tables.Item(TableCount).Columns.Count;
-  // Определяем количество строк
+  // ГЋГЇГ°ГҐГ¤ГҐГ«ГїГҐГ¬ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® Г±ГІГ°Г®ГЄ
   TableRowsCount := W.activedocument.Tables.Item(TableCount).Rows.Count;
   HTMLFile.Append('<table border="4" bordercolor="#000000">');
-  //перебираем по строкам/колонкам
+  //ГЇГҐГ°ГҐГЎГЁГ°Г ГҐГ¬ ГЇГ® Г±ГІГ°Г®ГЄГ Г¬/ГЄГ®Г«Г®Г­ГЄГ Г¬
   for CurrentRow := 1 to TableRowsCount do
   begin
     HTMLFile.Append('<tr>');
@@ -282,12 +283,12 @@ end;
 end.
 
 {
-  Надо сделать:
-  1. оглавление
-  2. типы списков
-  3. таблицы
-  4. картинки
-  5. косметика (выравнивание)
+  ГЌГ Г¤Г® Г±Г¤ГҐГ«Г ГІГј:
+  1. Г®ГЈГ«Г ГўГ«ГҐГ­ГЁГҐ
+  2. ГІГЁГЇГ» Г±ГЇГЁГ±ГЄГ®Гў
+  3. ГІГ ГЎГ«ГЁГ¶Г»
+  4. ГЄГ Г°ГІГЁГ­ГЄГЁ
+  5. ГЄГ®Г±Г¬ГҐГІГЁГЄГ  (ГўГ»Г°Г ГўГ­ГЁГўГ Г­ГЁГҐ)
 }
 
 {
